@@ -9,6 +9,7 @@ class Project(models.Model):
     suffix = models.TextField()
     image = models.ImageField(upload_to="image/")
     slug = models.SlugField(unique=True, blank=True, editable=False)
+    github = models.CharField(max_length=250, unique=True, null=True)
     view_count = models.IntegerField(default=0)
 
     def save(self, *args, **kwargs):
