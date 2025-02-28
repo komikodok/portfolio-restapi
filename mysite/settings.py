@@ -35,8 +35,19 @@ INSTALLED_APPS = [
 
     'api.apps.ApiConfig',
     'contact.apps.ContactConfig',
-    'projects.apps.ProjectsConfig'
+    'projects.apps.ProjectsConfig',
+    'assistant.apps.AssistantConfig',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.ScopedRateThrottle'
+    ],
+
+    'DEFAULT_THROTTLE_RATES': {
+        'chat_throttle': '2/day'
+    }
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
