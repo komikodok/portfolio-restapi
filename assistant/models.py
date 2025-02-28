@@ -16,10 +16,11 @@ class MessageHistory(models.Model):
 class Assistant(models.Model):
     choice = (
         ("normal", "normal"),
-        ("happy", "happy")
+        ("happy", "happy"),
+        ("sad", "sad")
     )
     mood = models.CharField(max_length=10, choices=choice)
-    image = models.ImageField(upload_to="image/")
+    image = models.ImageField(upload_to="assistant/")
 
     def __str__(self) -> str:
         return self.mood

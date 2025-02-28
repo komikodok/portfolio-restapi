@@ -65,7 +65,7 @@ chain = (
 
 class LLMApp:
     def __init__(self):
-        self.llm_app = chain
+        self.__llm_app = chain
         self.__result = None
 
     def invoke(self, input: dict = None, **kwargs):

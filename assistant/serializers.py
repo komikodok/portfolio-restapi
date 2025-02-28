@@ -11,6 +11,7 @@ class MessageHistorySerializer(serializers.ModelSerializer):
 
 
 class AssistantSerializer(serializers.ModelSerializer):
+    image_url = serializers.SerializerMethodField()
 
     class Meta:
         model = Assistant
