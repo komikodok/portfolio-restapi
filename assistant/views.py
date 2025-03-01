@@ -50,38 +50,9 @@ class AssistantView(APIView):
         
         user = request.user or None
 
-        try:
-            result = self.__llm_app.invoke(user_input=prompt, message_history=message_history)
-            generation = result.generation
-            mood = result.mood
-        except (BadRequestError, ValidationError) as error:
-            assistant_image_url = AssistantView.get_image_url(request, mood="sad")
-            logger.error(f"Error: {error}")
-            return Response({
-                'generation': "Maaf aku tidak mendengarnya, bisa tolong ulangi?",
-                'image_url': assistant_image_url
-            }, status=status.HTTP_400_BAD_REQUEST)
-        except (RateLimitError, Throttled) as error:
-            assistant_image_url = AssistantView.get_image_url(request, mood="sad")
-            logger.error(f"Error: {error}")
-            return Response({
-                'generation': "Ruby mau istirahat, silahkan kembali lagi besok!",
-                'image_url': assistant_image_url
-            }, status=status.HTTP_429_TOO_MANY_REQUESTS)
-        except APIStatusError as error:
-            assistant_image_url = AssistantView.get_image_url(request, mood="sad")
-            logger.error(f"Error: {error}")
-            return Response({
-                'generation': "Maaf terjadi kesalahan, bisa ulangi lagi?",
-                'image_url': assistant_image_url
-            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        except Exception as error:
-            assistant_image_url = AssistantView.get_image_url(request, mood="sad")
-            logger.error(f"Error: {error}")
-            return Response({
-                'generation': "Maaf terjadi kesalahan, bisa ulangi lagi?",
-                'image_url': assistant_image_url
-            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        result = self.__llm_app.invoke(user_input=prompt, message_history=message_history)
+        generation = result.generation
+        mood = result.mood
 
         message = [
             {"role": "user", "content": prompt},
@@ -118,4 +89,36 @@ class AssistantView(APIView):
             (18, 24, "Malam")
         ] if start <= time_of_day < end), "Malam")
 
+    def get_throttles(self):
+        if self.request.method == "POST":
+            return [ScopedRateThrottle()]
+        return []
+    
+    def handle_exception(self, exc):
+        request = getattr(self, "request", None)
+        
+        match exc:
+            case BadRequestError() | ValidationError():
+                assistant_image_url = AssistantView.get_image_url(request, mood="sad")
+                logger.error(f"Error: {exc.detail}")
+                return Response({
+                    'generation': "Maaf aku tidak mendengarnya, bisa tolong ulangi?",
+                    'image_url': assistant_image_url
+                }, status=status.HTTP_400_BAD_REQUEST)
+
+            case RateLimitError() | Throttled():
+                assistant_image_url = AssistantView.get_image_url(request, mood="sad")
+                logger.error(f"Error: {exc.detail}")
+                return Response({
+                    'generation': "Ruby mau istirahat, silahkan kembali lagi besok!",
+                    'image_url': assistant_image_url
+                }, status=status.HTTP_429_TOO_MANY_REQUESTS)
+
+            case _:
+                assistant_image_url = AssistantView.get_image_url(request, mood="sad")
+                logger.error(f"Error: {exc.detail}")
+                return Response({
+                    'generation': "Maaf servernya error nih, silahkan coba lagi nanti ya?",
+                    'image_url': assistant_image_url
+                }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
