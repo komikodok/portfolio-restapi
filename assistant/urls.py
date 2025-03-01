@@ -3,4 +3,5 @@ from .views import AssistantView
 
 urlpatterns = [
     path('', AssistantView.as_view()),
+    path('clear-history/', )
 ]

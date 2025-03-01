@@ -121,4 +121,13 @@ class AssistantView(APIView):
                     'generation': "Maaf servernya error nih, silahkan coba lagi nanti ya?",
                     'image_url': assistant_image_url
                 }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class ClearMessageHistory(APIView):
+
+    def post(self, request):
+        request.session["message_history"] = []
+        request.session.modified = True
+
+        return
         
