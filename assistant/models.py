@@ -1,9 +1,9 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 
 
 class MessageHistory(models.Model):
-    user = models.ForeignKey(User, related_name="messages_history", on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey(get_user_model(), related_name="messages_history", on_delete=models.CASCADE, null=True)
     message = models.JSONField()
     timestamp = models.DateTimeField(auto_now_add=True)
 

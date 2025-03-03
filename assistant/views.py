@@ -16,7 +16,6 @@ from .serializers import AssistantSerializer
 from .llm import LLMApp
 
 class AssistantView(APIView):
-    throttle_classes = [ScopedRateThrottle]
     throttle_scope = 'chat_throttle'
 
     def __init__(self, **kwargs):
@@ -48,7 +47,7 @@ class AssistantView(APIView):
         if not prompt:
             return Response({"detail": "prompt is required"}, status=status.HTTP_400_BAD_REQUEST)
         
-        user = request.user or None
+        user = request.user if request.user.is_authenticated else None
 
         result = self.__llm_app.invoke(user_input=prompt, message_history=message_history)
         generation = result.generation
@@ -100,7 +99,7 @@ class AssistantView(APIView):
         match exc:
             case BadRequestError() | ValidationError():
                 assistant_image_url = AssistantView.get_image_url(request, mood="sad")
-                logger.error(f"Error: {exc.detail}")
+                logger.error(f"BadRequestError | ValidationError: {exc}")
                 return Response({
                     'generation': "Maaf aku tidak mendengarnya, bisa tolong ulangi?",
                     'image_url': assistant_image_url
@@ -108,7 +107,7 @@ class AssistantView(APIView):
 
             case RateLimitError() | Throttled():
                 assistant_image_url = AssistantView.get_image_url(request, mood="sad")
-                logger.error(f"Error: {exc.detail}")
+                logger.error(f"RateLimitError | Throttled: {exc}")
                 return Response({
                     'generation': "Ruby mau istirahat, silahkan kembali lagi besok!",
                     'image_url': assistant_image_url
@@ -116,9 +115,9 @@ class AssistantView(APIView):
 
             case _:
                 assistant_image_url = AssistantView.get_image_url(request, mood="sad")
-                logger.error(f"Error: {exc.detail}")
+                logger.error(f"Internal Server Error: {exc}")
                 return Response({
-                    'generation': "Maaf servernya error nih, silahkan coba lagi nanti ya?",
+                    'generation': "Maaf ya servernya masih perbaikan, silahkan coba lagi nanti ya?",
                     'image_url': assistant_image_url
                 }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
@@ -128,6 +127,10 @@ class ClearMessageHistory(APIView):
     def post(self, request):
         request.session["message_history"] = []
         request.session.modified = True
+        print(request.session.get("message_history"))
 
-        return
+        return Response({
+            "status": "ok",
+            "message": "Clear message history successfully."}
+        , status=status.HTTP_200_OK)
         
