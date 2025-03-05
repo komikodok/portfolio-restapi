@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from .models import MessageHistory, Assistant
-
+from django.conf import settings
 
 class MessageHistorySerializer(serializers.ModelSerializer):
 
@@ -15,7 +15,7 @@ class AssistantSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Assistant
-        fields = "__all__"
+        fields = ["mood", "image_url"]
 
     def get_image_url(self, obj):
         request = self.context.get("request")

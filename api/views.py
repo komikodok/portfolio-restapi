@@ -7,6 +7,7 @@ class ApiRootView(APIView):
     def get(self, request, *args, **kwargs):
         api_endpoints = {
             "contact": request.build_absolute_uri("contact"),
-            "project": request.build_absolute_uri("project"),
+            "projects": request.build_absolute_uri("projects"),
+            "assistant": request.build_absolute_uri("assistant"),
         }
         return Response(api_endpoints, status=status.HTTP_200_OK)

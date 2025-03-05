@@ -1,5 +1,10 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.conf import settings
+from django.core.files.uploadedfile import InMemoryUploadedFile
+import cloudinary
+from cloudinary.models import CloudinaryField
+import os
 
 
 class MessageHistory(models.Model):
@@ -19,8 +24,17 @@ class Assistant(models.Model):
         ("happy", "happy"),
         ("sad", "sad")
     )
+    public_id = models.CharField(max_length=255, blank=True, null=True)
     mood = models.CharField(max_length=10, choices=choice)
-    image = models.ImageField(upload_to="assistant/")
+    if settings.DEBUG:
+        image = models.ImageField(upload_to="assistant/")
+    else:
+        image = CloudinaryField(
+            "image", 
+            folder="assistant/", 
+            resource_type="image",
+            type="authenticated"
+        )
 
     def __str__(self) -> str:
         return self.mood
