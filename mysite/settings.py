@@ -32,6 +32,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'admin_honeypot',
 
     'corsheaders',
     'rest_framework',
@@ -57,12 +62,14 @@ REST_FRAMEWORK = {
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
 ]
 
 ROOT_URLCONF = 'mysite.urls'
@@ -133,7 +140,9 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-STATIC_FILES = [BASE_DIR / 'static']
+STATICFILES_DIRS = [BASE_DIR / 'static']
+
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 MEDIA_URL = '/media/'
 
@@ -171,3 +180,9 @@ cloudinary.config(
     api_key=env('CLOUD_API_KEY'),
     api_secret=env('CLOUD_API_SECRET')
 )
+
+ACCOUNT_USERNAME_BLACKLIST = [
+    "admin", "root", "staff", "moderator", "test", "support", "legendkampretadmin"
+]
+
+print(DEBUG)
