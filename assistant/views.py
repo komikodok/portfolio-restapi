@@ -134,10 +134,10 @@ class ClearMessageHistory(APIView):
             "message": "Clear message history successfully."}
         , status=status.HTTP_200_OK)
         
-class Test(APIView):
+# class Test(APIView):
 
-    def get(self, request):
-        from django.conf import settings
-        assistant = get_object_or_404(Assistant, mood='normal')
-        assistant_serializer = AssistantSerializer(assistant, context={"request": request}).data
-        return Response({"image_url": assistant_serializer.get('image_url')})
+#     def get(self, request):
+#         from django.conf import settings
+#         assistant = get_object_or_404(Assistant, mood='normal')
+#         assistant_serializer = AssistantSerializer(assistant, context={"request": request}).data
+#         return Response({"image_url": assistant_serializer.get('image_url')})
