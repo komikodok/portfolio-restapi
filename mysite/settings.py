@@ -103,7 +103,7 @@ if DEBUG:
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 else:
-    DATABASES['default'] = dj_database_url.config(env('DATABASE_URL'))
+    DATABASES['default'] = dj_database_url.config(default=env('DATABASE_URL'))
 
 
 # Password validation
