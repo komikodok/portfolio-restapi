@@ -11,7 +11,7 @@ from pydantic import ValidationError
 from datetime import datetime
 import random
 from log import logger
-from .models import MessageHistory, Assistant
+from .models import Assistant
 from .serializers import AssistantSerializer
 from .llm import LLMApp
 
@@ -58,7 +58,6 @@ class AssistantView(APIView):
             {"role": "assistant", "content": generation},
         ]
         message_history.extend(message)
-        MessageHistory.objects.create(user=user, message=message)
 
         request.session["message_history"] = message_history[-20:]
         request.session.modified = True

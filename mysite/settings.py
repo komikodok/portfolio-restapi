@@ -4,6 +4,7 @@ import environ
 import cloudinary
 import cloudinary.uploader
 import cloudinary.api
+import dj_database_url
 
 env = environ.Env()
 
@@ -18,9 +19,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env('DEBUG') == 'True'
+DEBUG = env('ENVIRONTMENT') == 'DEVELOPMENT'
 
-ALLOWED_HOSTS = ['localhost']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'fazport.up.railway.app']
 
 # Application definition
 
@@ -94,12 +95,15 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
+DATABASES = {}
+
+if DEBUG:
+    DATABASES['default'] = {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
-}
+else:
+    DATABASES['default'] = dj_database_url.config(env('DATABASE_URL'))
 
 
 # Password validation
@@ -184,5 +188,3 @@ cloudinary.config(
 ACCOUNT_USERNAME_BLACKLIST = [
     "admin", "root", "staff", "moderator", "test", "support", "legendkampretadmin"
 ]
-
-print(DEBUG)

@@ -1,13 +1,13 @@
 from rest_framework import serializers
 
-from .models import MessageHistory, Assistant
+from .models import Assistant
 from django.conf import settings
 
-class MessageHistorySerializer(serializers.ModelSerializer):
+# class MessageHistorySerializer(serializers.ModelSerializer):
 
-    class Meta:
-        model = MessageHistory
-        fields = ['user', 'message', 'timestamp']
+#     class Meta:
+#         model = MessageHistory
+#         fields = ['user', 'message', 'timestamp']
 
 
 class AssistantSerializer(serializers.ModelSerializer):

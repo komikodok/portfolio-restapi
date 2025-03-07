@@ -7,15 +7,15 @@ from cloudinary.models import CloudinaryField
 import os
 
 
-class MessageHistory(models.Model):
-    user = models.ForeignKey(get_user_model(), related_name="messages_history", on_delete=models.CASCADE, null=True)
-    message = models.JSONField()
-    timestamp = models.DateTimeField(auto_now_add=True)
+# class MessageHistory(models.Model):
+#     user = models.ForeignKey(get_user_model(), related_name="messages_history", on_delete=models.CASCADE, null=True)
+#     message = models.JSONField()
+#     timestamp = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self) -> str:
-        username = "AnonymousUser" if self.user is None else self.user.get_username()
-        message = self.message[-1].get("content", "")
-        return f"{username}: {message}"
+#     def __str__(self) -> str:
+#         username = "AnonymousUser" if self.user is None else self.user.get_username()
+#         message = self.message[-1].get("content", "")
+#         return f"{username}: {message}"
     
 
 class Assistant(models.Model):
