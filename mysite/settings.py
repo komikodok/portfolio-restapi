@@ -164,6 +164,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CSRF_TRUSTED_ORIGINS = [
     'http://localhost:5173',
     'http://127.0.0.1:5173',
+    'https://fazport.up.railway.app'
 ]
 
 CORS_ALLOWED_ORIGINS = [
@@ -187,5 +188,5 @@ cloudinary.config(
 )
 
 ACCOUNT_USERNAME_BLACKLIST = [
-    "admin", "root", "staff", "moderator", "test", "support", "legendkampretadmin"
+    "admin", "root", "staff", "moderator", "test", "support", "legendkampretbos"
 ]
