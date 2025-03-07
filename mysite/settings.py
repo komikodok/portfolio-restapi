@@ -47,6 +47,8 @@ INSTALLED_APPS = [
     'assistant.apps.AssistantConfig',
 ]
 
+SITE_ID = 1
+
 REST_FRAMEWORK = {
     'DEFAULT_THROTTLE_CLASSES': [
         'rest_framework.throttling.ScopedRateThrottle'
