@@ -17,8 +17,8 @@ llm = ChatGroq(model=model_config, api_key=groq_apikey)
 
 class Schema(BaseModel):
     generation: str = Field(description="Your respond for every user input.")
-    mood: Literal["normal", "happy"] = Field(
-        description="Analyze your response and determine the mood or emotional tone behind it. Like 'normal', 'happy'"
+    mood: Literal["normal", "happy", "sad"] = Field(
+        description="Analyze your response and determine the mood or emotional tone behind it. Like 'normal', 'happy' or 'sad'"
     )
 
 structured_llm = llm.with_structured_output(Schema)
@@ -33,7 +33,7 @@ template = """
     **Format Output:**
     Balikin respons dengan dua bagian:
     - `generation` (string): Responmu untuk user.
-    - `mood` (string): Suasana hati/emosi dari jawabanmu, pilih salah satu: ["normal", "happy"].
+    - `mood` (string): Suasana hati/emosi dari jawabanmu, pilih salah satu: ["normal", "happy", "sad"].
 """
 
 prompt = ChatPromptTemplate.from_messages(
