@@ -1,12 +1,10 @@
 from pathlib import Path
-import environ
-
+import os
+from dotenv import load_dotenv, find_dotenv
 import cloudinary
 import cloudinary.uploader
 import cloudinary.api
 import dj_database_url
-
-env = environ.Env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -16,10 +14,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env("SECRET_KEY")
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env('ENVIRONTMENT') == 'DEVELOPMENT'
+DEBUG = os.getenv('ENVIRONTMENT') == 'DEVELOPMENT'
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'fazport.up.railway.app']
 
@@ -104,7 +102,7 @@ if DEBUG:
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 else:
-    DATABASES['default'] = dj_database_url.config(default=env('DATABASE_URL'))
+    DATABASES['default'] = dj_database_url.config(default=os.getenv('DATABASE_URL'))
 
 
 # Password validation
@@ -177,13 +175,13 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = env('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 
 cloudinary.config(
-    cloud_name=env('CLOUD_NAME'),
-    api_key=env('CLOUD_API_KEY'),
-    api_secret=env('CLOUD_API_SECRET')
+    cloud_name=os.getenv('CLOUD_NAME'),
+    api_key=os.getenv('CLOUD_API_KEY'),
+    api_secret=os.getenv('CLOUD_API_SECRET')
 )
 
 ACCOUNT_USERNAME_BLACKLIST = [
