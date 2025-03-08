@@ -132,7 +132,7 @@ class ClearMessageHistory(APIView):
             "message": "Clear message history successfully."}
         , status=status.HTTP_200_OK)
         
-class Test(APIView):
+class MoodItems(APIView):
 
     def get(self, request):
         assistant = Assistant.objects.all()
