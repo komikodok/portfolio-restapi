@@ -47,6 +47,6 @@ class ContactAPIView(APIView):
         return Response({
             "status": "errors",
             "message": "Failed to create contact message!",
-            "errors": form.errors
+            "error": form.errors
         }, status=status.HTTP_400_BAD_REQUEST)
             

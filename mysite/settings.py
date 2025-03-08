@@ -55,7 +55,7 @@ REST_FRAMEWORK = {
     ],
 
     'DEFAULT_THROTTLE_RATES': {
-        'chat_throttle': '2/day'
+        'chat_throttle': '250/day'
     }
 }
 
