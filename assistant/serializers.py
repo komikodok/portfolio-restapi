@@ -2,12 +2,7 @@ from rest_framework import serializers
 
 from .models import Assistant
 from django.conf import settings
-
-# class MessageHistorySerializer(serializers.ModelSerializer):
-
-#     class Meta:
-#         model = MessageHistory
-#         fields = ['user', 'message', 'timestamp']
+from cloudinary.utils import cloudinary_url
 
 
 class AssistantSerializer(serializers.ModelSerializer):
@@ -19,4 +14,11 @@ class AssistantSerializer(serializers.ModelSerializer):
 
     def get_image_url(self, obj):
         request = self.context.get("request")
+        
+        if not settings.DEBUG:
+            url, _ = cloudinary_url(
+                obj.image.public_id,
+                sign_url=True
+            )
+            return url
         return request.build_absolute_uri(obj.image.url) if obj.image else None

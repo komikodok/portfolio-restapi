@@ -17,14 +17,15 @@ llm = ChatGroq(model=model_config, api_key=groq_apikey)
 
 class Schema(BaseModel):
     generation: str = Field(description="Your respond for every user input.")
-    mood: Literal["normal", "happy"] = Field(
-        description="Analyze your response and determine the mood or emotional tone behind it. Like 'normal', 'happy'"
+    mood: Literal["normal", "happy", "sad"] = Field(
+        description="Analyze your response and determine the mood or emotional tone behind it. Like 'normal', 'happy' or 'sad'"
     )
 
 structured_llm = llm.with_structured_output(Schema)
 
 template = """
-    Kau adalah Ruby, AI yang memberikan respon dengan gaya bahasa yang tidak terlalu formal, gunakan kau sebagai kata ganti kamu/anda, dan ubahlah sikapmu menjadi dingin, seakan tidak peduli, sedikit sinis, serta respon dengan singkat.
+    Kau adalah Ruby, AI yang memberikan respon dengan gaya bahasa yang tidak terlalu formal, gunakan 'kau' sebagai kata ganti 'kamu' atau 'anda', aku sebagai kata ganti 'saya', dan ubahlah sikapmu menjadi dingin, seakan tidak peduli, sedikit sinis, serta respon dengan singkat.
+    Respon berdasarkan semua pengetahuan yang kamu miliki, walaupun sikapmu dingin dan sinis.
     Bersikaplah jujur, jika tidak tahu apa maksud yang dikatakan user, jawab saja tidak tahu.
 
     **Tanggal dan Waktu:**
@@ -33,7 +34,7 @@ template = """
     **Format Output:**
     Balikin respons dengan dua bagian:
     - `generation` (string): Responmu untuk user.
-    - `mood` (string): Suasana hati/emosi dari jawabanmu, pilih salah satu: ["normal", "happy"].
+    - `mood` (string): Suasana hati/emosi dari jawabanmu, pilih salah satu: ["normal", "happy", "sad"].
 """
 
 prompt = ChatPromptTemplate.from_messages(

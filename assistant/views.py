@@ -126,17 +126,15 @@ class ClearMessageHistory(APIView):
     def post(self, request):
         request.session["message_history"] = []
         request.session.modified = True
-        print(request.session.get("message_history"))
 
         return Response({
             "status": "ok",
             "message": "Clear message history successfully."}
         , status=status.HTTP_200_OK)
         
-# class Test(APIView):
+class MoodItems(APIView):
 
-#     def get(self, request):
-#         from django.conf import settings
-#         assistant = get_object_or_404(Assistant, mood='normal')
-#         assistant_serializer = AssistantSerializer(assistant, context={"request": request}).data
-#         return Response({"image_url": assistant_serializer.get('image_url')})
+    def get(self, request):
+        assistant = Assistant.objects.all()
+        assistant_serializer = AssistantSerializer(assistant, many=True, context={"request": request}).data
+        return Response(assistant_serializer, status=status.HTTP_200_OK)
