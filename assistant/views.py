@@ -116,7 +116,7 @@ class AssistantView(APIView):
                 assistant_image_url = AssistantView.get_image_url(request, mood="sad")
                 logger.error(f"Internal Server Error: {exc}")
                 return Response({
-                    'generation': "Maaf ya servernya masih perbaikan, silahkan coba lagi nanti ya?",
+                    'generation': "Maaf ya servernya masih dalam tahap perbaikan, silahkan coba lagi nanti ya?",
                     'image_url': assistant_image_url
                 }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
