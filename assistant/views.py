@@ -98,7 +98,7 @@ class AssistantView(APIView):
         match exc:
             case BadRequestError() | ValidationError():
                 assistant_image_url = AssistantView.get_image_url(request, mood="sad")
-                logger.error(f"BadRequestError | ValidationError: {exc}")
+                # logger.error(f"BadRequestError | ValidationError: {exc}")
                 return Response({
                     'generation': "Maaf aku tidak mendengarnya, bisa tolong ulangi?",
                     'image_url': assistant_image_url
@@ -106,7 +106,7 @@ class AssistantView(APIView):
 
             case RateLimitError() | Throttled():
                 assistant_image_url = AssistantView.get_image_url(request, mood="sad")
-                logger.error(f"RateLimitError | Throttled: {exc}")
+                # logger.error(f"RateLimitError | Throttled: {exc}")
                 return Response({
                     'generation': "Ruby mau istirahat, silahkan kembali lagi besok!",
                     'image_url': assistant_image_url
@@ -114,7 +114,7 @@ class AssistantView(APIView):
 
             case _:
                 assistant_image_url = AssistantView.get_image_url(request, mood="sad")
-                logger.error(f"Internal Server Error: {exc}")
+                # logger.error(f"Internal Server Error: {exc}")
                 return Response({
                     'generation': "Maaf ya servernya masih dalam tahap perbaikan, silahkan coba lagi nanti ya?",
                     'image_url': assistant_image_url
