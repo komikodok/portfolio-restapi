@@ -19,7 +19,6 @@ class Project(models.Model):
             "image", 
             folder="projects/", 
             resource_type="image",
-            type="authenticated"
         )
 
     def save(self, *args, **kwargs):

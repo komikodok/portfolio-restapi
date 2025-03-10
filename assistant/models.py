@@ -17,7 +17,6 @@ class Assistant(models.Model):
             "image", 
             folder="assistant/", 
             resource_type="image",
-            type="authenticated"
         )
 
     def __str__(self) -> str:
