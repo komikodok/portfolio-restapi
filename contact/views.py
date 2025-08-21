@@ -19,34 +19,31 @@ class ContactAPIView(APIView):
             message = f"""
                 You received a new contact message.
 
-                Name: {data['first_name']} {data['last_name']}
+                Name: {data['name']}
                 Email: {data['email']}
                 Message : {data['message']}
             """
 
             try:
                 send_mail(
-                    f"New message from {data['email']}",
+                    subject=f"New message from {data['email']}",
                     message=message,
                     from_email=EMAIL_HOST_USER,
                     recipient_list=["adm.fazport@gmail.com"],
                     fail_silently=False
                 )
             except Exception as error:
-                logger.error(f"Error: {error}")
+                # logger.error(f"Error: {error}")
                 return Response({
                     "status": "error",
-                    "message": "contact message is created but failed to sended message.",
                     "error": str(error)
                 })
 
             return Response({
                 "status": "ok",
-                "message": "contact message is created successfully and email sended to admin."
             }, status=status.HTTP_201_CREATED)
         return Response({
             "status": "errors",
-            "message": "Failed to create contact message!",
             "error": form.errors
         }, status=status.HTTP_400_BAD_REQUEST)
             

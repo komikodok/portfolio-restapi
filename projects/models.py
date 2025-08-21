@@ -7,10 +7,10 @@ from cloudinary.models import CloudinaryField
 class Project(models.Model):
     title = models.CharField(max_length=250, unique=True)
     description = models.TextField()
-    prefix = models.TextField()
-    suffix = models.TextField()
+    body = models.TextField()
     slug = models.SlugField(unique=True, blank=True, editable=False)
-    github = models.CharField(max_length=250, unique=True, null=True)
+    link = models.URLField(max_length=500, unique=True, blank=True, null=True)
+    github = models.URLField(max_length=250, unique=True, null=True)
     view_count = models.IntegerField(default=0)
     if settings.DEBUG:
         image = models.ImageField(upload_to="image/")

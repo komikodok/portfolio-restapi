@@ -11,6 +11,7 @@ load_dotenv(find_dotenv())
 urlpatterns = [
     path('csrf-token/', csrf_token),
     path('api/', include('api.urls')),
+    path('admin/', admin.site.urls)
 ]
 
 if settings.DEBUG:

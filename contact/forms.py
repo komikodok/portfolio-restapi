@@ -4,15 +4,11 @@ from .models import ContactMessage
 class ContactForm(forms.ModelForm):
     class Meta:
         model = ContactMessage
-        fields = ["first_name", "last_name", "email", "phone_number", "message"]
+        fields = ["name", "email", "phone_number", "message"]
         error_messages = {
-            "first_name": {
-                "required": "Please enter your first name.",
+            "name": {
+                "required": "Please enter your name.",
                 "max_length": "Ensuring the first name has a maximum of 20 characters.",
-            },
-            "last_name": {
-                "required": "Please enter your last name.",
-                "max_length": "Ensuring the last name has a maximum of 20 characters.",
             },
             "email": {
                 "required": "We need your email address to contact you.",

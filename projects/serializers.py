@@ -21,7 +21,7 @@ class ProjectDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Project
-        fields = ['title', 'prefix', 'suffix', 'image_url']
+        fields = ['title', 'description', 'body', 'image_url']
 
     def get_image_url(self, obj):
         request = self.context.get("request")

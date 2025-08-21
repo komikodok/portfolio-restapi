@@ -6,6 +6,8 @@ import cloudinary.uploader
 import cloudinary.api
 import dj_database_url
 
+load_dotenv(find_dotenv())
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -162,18 +164,18 @@ else:
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CSRF_TRUSTED_ORIGINS = [
-    'http://localhost:5173',
-    'http://127.0.0.1:5173',
-    os.getenv('FRONTEND_URL'),
-    os.getenv('BACKEND_URL')
+    'http://localhost:3000',
+    'http://127.0.0.1:3000',
+    # os.getenv('FRONTEND_URL'),
+    # os.getenv('BACKEND_URL')
 ]
 
 CSRF_COOKIE_SECURE = True
 
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:5173',
-    'http://127.0.0.1:5173',
-    os.getenv('FRONTEND_URL'),
+    'http://localhost:3000',
+    'http://127.0.0.1:3000',
+    # os.getenv('FRONTEND_URL'),
     ]
 
 CORS_ALLOW_CREDENTIALS = True

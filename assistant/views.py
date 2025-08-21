@@ -36,8 +36,11 @@ class AssistantView(APIView):
         greeting = random.choice(greeting)
 
         return Response({
-            "generation": greeting,
-            "image_url": assistant_image_url
+            "status": "ok",
+            "data": {
+                "generation": greeting,
+                "image_url": assistant_image_url
+            }
         })
 
     def post(self, request, *args, **kwargs):
@@ -47,7 +50,7 @@ class AssistantView(APIView):
         if not prompt:
             return Response({"detail": "prompt is required"}, status=status.HTTP_400_BAD_REQUEST)
         
-        user = request.user if request.user.is_authenticated else None
+        # user = request.user if request.user.is_authenticated else None
 
         result = self.__llm_app.invoke(user_input=prompt, message_history=message_history)
         generation = result.generation
@@ -65,8 +68,11 @@ class AssistantView(APIView):
         assistant_image_url = AssistantView.get_image_url(request, mood=mood)
 
         return Response({
-            "generation": generation,
-            "image_url": assistant_image_url
+            "status": "ok",
+            "data": {
+                "generation": generation,
+                "image_url": assistant_image_url
+            }
         }, status=status.HTTP_201_CREATED)
 
     @staticmethod
@@ -100,26 +106,34 @@ class AssistantView(APIView):
                 assistant_image_url = AssistantView.get_image_url(request, mood="sad")
                 # logger.error(f"BadRequestError | ValidationError: {exc}")
                 return Response({
-                    'generation': "Maaf aku tidak mendengarnya, bisa tolong ulangi?",
-                    'image_url': assistant_image_url
+                    "status": "error",
+                    "data": {
+                        "generation": "Maaf aku tidak mendengarnya, bisa tolong ulangi?",
+                        "image_url": assistant_image_url
+                    }
                 }, status=status.HTTP_400_BAD_REQUEST)
 
             case RateLimitError() | Throttled():
                 assistant_image_url = AssistantView.get_image_url(request, mood="sad")
                 # logger.error(f"RateLimitError | Throttled: {exc}")
                 return Response({
-                    'generation': "Ruby mau istirahat, silahkan kembali lagi besok!",
-                    'image_url': assistant_image_url
+                    "status": "error",
+                    "data": {
+                        "generation": "Ruby mau istirahat, silahkan kembali lagi besok!",
+                        "image_url": assistant_image_url
+                    }
                 }, status=status.HTTP_429_TOO_MANY_REQUESTS)
-
+            
             case _:
                 assistant_image_url = AssistantView.get_image_url(request, mood="sad")
                 # logger.error(f"Internal Server Error: {exc}")
                 return Response({
-                    'generation': "Maaf ya servernya masih dalam tahap perbaikan, silahkan coba lagi nanti ya?",
-                    'image_url': assistant_image_url
+                    "status": "error",
+                    "data": {
+                        "generation": "Maaf ya servernya masih dalam tahap perbaikan, silahkan coba lagi nanti ya?",
+                        "image_url": assistant_image_url
+                    }
                 }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
 
 class ClearMessageHistory(APIView):
 
@@ -129,7 +143,7 @@ class ClearMessageHistory(APIView):
 
         return Response({
             "status": "ok",
-            "message": "Clear message history successfully."}
+        }
         , status=status.HTTP_200_OK)
         
 class MoodItems(APIView):
